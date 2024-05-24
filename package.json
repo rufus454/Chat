@@ -1,0 +1,45 @@
+{
+  "name": "api",
+  "version": "1.0.7",
+  "description": "Esta es mi primera API",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lainodHO/API-REST.git"
+  },
+  "author": "Daniel Hernández Olague",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lainodHO/API-REST/issues"
+  },
+  "homepage": "https://github.com/lainodHO/API-REST#readme",
+  "dependencies": {
+    "axios": "^1.6.8",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "fs": "^0.0.1-security",
+    "https": "^1.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.9.7",
+    "pg": "^8.11.5",
+    "socket.io": "^4.7.5",
+    "swagger-ui-express": "^5.0.0"
+  },
+  "bin": {
+    "api-docker": "./app.js"
+  },
+  "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
+  },
+  "scripts": {
+    "test": "jest"
+  }
+}

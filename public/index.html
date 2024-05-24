@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat</title>
+  <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+  <h2>Proyecto Chat</h2>
+  <div class="container" id="container">
+    <div class="form-container sign-up-container">
+      <form onsubmit="register(event)">
+        <h1>Crear una cuenta</h1>
+        <input id="usernamer" type="text" placeholder="Usuario" autocomplete="off" />
+        <input id="passwordr" type="password" placeholder="Contraseña" autocomplete="off" />
+        <button type="submit">Regístrate</button>
+      </form>
+    </div>
+    <div class="form-container sign-in-container">
+      <form onsubmit="login(event)">
+        <h1>Inicia Sesión</h1>
+        <input id="username" type="text" placeholder="Usuario" autocomplete="off" />
+        <input id="password" type="password" placeholder="Contraseña" autocomplete="off" />
+        <button type="submit">Ingresa</button>
+      </form>
+    </div>
+    <div class="overlay-container">
+      <div class="overlay">
+        <div class="overlay-panel overlay-left">
+          <h1>Bienvenido de regreso!</h1>
+          <p>Para comenzar a chatear inicia sesión</p>
+          <button class="ghost" id="signIn">Inicio sesión</button>
+        </div>
+        <div class="overlay-panel overlay-right">
+          <h1>Hola, Usuario!</h1>
+          <p>¿No tienes una cuenta? Ingresa tus datos.</p>
+          <button class="ghost" id="signUp">Registro</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>
+      Proyecto para fullstack
+    </p>
+  </footer>
+
+  <script src="js/template.js" type="text/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+  <!--Esta scrilpt sirve para ingresar y registrar secion -->
+  <script type="text/javascript">
+    const init = () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        window.location.href = 'chat.html';
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', function () {
+      init();
+    });
+
+    const login = (e) => {
+      e.preventDefault();
+      const username = e.target.username.value;
+      const password = e.target.password.value;
+      fetch('http://localhost:3003/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username,
+          password
+        })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.token) {
+            localStorage.setItem('username', username);
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('isLoggedIn', true);
+            window.location.href = 'chat.html';
+          }
+        })
+        .catch(error => console.error(error));
+    }
+
+    const register = (e) => {
+      e.preventDefault();
+      const username = e.target.usernamer.value;
+      const password = e.target.passwordr.value;
+
+      // Validación de longitud mínima del nombre
+      if (username.length < 6) {
+        alert('El nombre debe tener al menos 6 caracteres');
+        return false;
+      }
+
+      // Validación de caracteres especiales en el nombre
+      const specialCharsRegex = /[&'";`#%;<>\\|$\^~?!@()\[\]{}_\-+=,.:]/;
+      if (specialCharsRegex.test(username)) {
+        alert('No puedes ingresar caracteres especiales en el nombre');
+        return false;
+      }
+
+      // Validación de espacios en el nombre
+      if (username.includes(' ')) {
+        alert('El nombre no puede contener espacios');
+        return false;
+      }
+
+      // Validación de longitud mínima, presencia de al menos un número y una mayúscula en la contraseña
+      if (password.length < 8 || !/\d/.test(password) || !/[A-Z]/.test(password)) {
+        alert('La contraseña debe tener al menos 8 caracteres, contener al menos un número y una letra mayúscula');
+        return false;
+      }
+
+      // Validación de caracteres especiales en la contraseña
+      if (specialCharsRegex.test(password)) {
+        alert('No puedes ingresar caracteres especiales en la contraseña');
+        return false;
+      }
+
+      // Validación de espacios en la contraseña
+      if (password.includes(' ')) {
+        alert('La contraseña no puede contener espacios');
+        return false;
+      }
+
+      fetch('http://localhost:3003/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          "nombre": username,
+          "contrasea": password
+        })
+      })
+        .then(response => {
+          if (response.status === 201) {
+            alert('Usuario creado exitosamente, por favor inicia sesión');
+            location.reload();
+          } else {
+            alert('Error al crear usuario');
+          }
+        })
+        .catch(error => console.error(error));
+    }
+  </script>
+
+
+
+
+
+</body>
+
+</html>
