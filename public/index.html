@@ -69,7 +69,7 @@
       e.preventDefault();
       const username = e.target.username.value;
       const password = e.target.password.value;
-      fetch('http://localhost:3003/api/login', {
+      fetch('https://marcocerros.azurewebsites.net/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -97,8 +97,8 @@
       const password = e.target.passwordr.value;
 
       // Validación de longitud mínima del nombre
-      if (username.length < 6) {
-        alert('El nombre debe tener al menos 6 caracteres');
+      if (username.length < 5) {
+        alert('El nombre debe tener al menos 5 caracteres');
         return false;
       }
 
@@ -133,7 +133,7 @@
         return false;
       }
 
-      fetch('http://localhost:3003/api/users', {
+      fetch('https://marcocerros.azurewebsites.net/api/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
