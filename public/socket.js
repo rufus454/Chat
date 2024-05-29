@@ -2,6 +2,16 @@
 // Conexión al Servidor WebSocket
 var socket = io.connect("https://manejador.azurewebsites.net");
 
+// Log when connected
+socket.on("connect", function () {
+  console.log("Se ha conectado por socket");
+});
+
+// Escuchar un evento del servidor
+socket.emit("connection", function (mensaje) {
+  console.log("Respuesta del servidor:");
+});
+
 const userMessage = (message) => {
   return `<div class="flex w-full mt-2 space-x-3 max-w-xs ml-auto justify-end">
                 <div>
@@ -26,13 +36,10 @@ const serverMessage = (autor, message) => {
             </div>`;
 };
 
-// Escuchar un evento del servidor
-socket.emit("connection", function (mensaje) {
-  console.log("Respuesta del servidor:");
-});
-
-// Manejar el evento 'respuesta' del servidor
+// Manejar el evento 'message' del servidor
 socket.on("message", function (messages) {
+  console.log("Datos recibidos desde el servidor: https://manejador.azurewebsites.net", messages);
+  
   const userName = localStorage.getItem("username");
   const messageList = document.getElementById("message-list");
 
@@ -52,6 +59,7 @@ document.getElementById("send-message").addEventListener("click", function () {
   const message = input.value;
   if (!message) {
     alert("Por favor, escribe un mensaje");
+    return;
   }
   const userName = localStorage.getItem("username");
   const payload = {
