@@ -13,7 +13,7 @@ const server = http.createServer(app);
 const io = socketIO(server);
 
 // Configuración de CORS para permitir solicitudes desde dominios específicos
-const allowedOrigins = ['https://manejador.azurewebsites.net', 'http://dhoubuntu.fullstack.com.mx', 'http://localhost:3003','https://manejador.azurewebsites.net:3003'];
+const allowedOrigins = ['https://manejador.azurewebsites.net', 'http://dhoubuntu.fullstack.com.mx', 'https://marcocerros.azurewebsites.net','https://marcocerros.azurewebsites.net:3003','https://manejador.azurewebsites.net:3003'];
 const corsOptions = {
     origin: allowedOrigins
 };
@@ -55,7 +55,7 @@ app.use((req, res, next) => {
 
 // Iniciar el servidor HTTP
 server.listen(PORT, () => {
-    console.log(`Server running at https://manejador.azurewebsites.net:${PORT}/`);
+    console.log(`Server running at https://marcocerros.azurewebsites.net:${PORT}/`);
 });
 
 module.exports = app; // Exportar app para uso en otros archivos

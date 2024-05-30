@@ -1,5 +1,16 @@
 // main.js (cliente)
 // Conexión al Servidor WebSocket
+var socket = io.connect("https://manejador.azurewebsites.net");
+
+// Log when connected
+socket.on("connect", function () {
+  console.log("Se ha conectado por socket");
+});
+
+// Escuchar un evento del servidor
+socket.emit("connection", function (mensaje) {
+  console.log("Respuesta del servidor:");
+});
 var socket = io.connect("https://manejador.azurewebsites.net"); // Nos conectamos al socket del servidor
 
 const userMessage = (message) => { // Esta funcion es para genera el html dinamico donde construimos el mensaje del usuario
@@ -26,6 +37,7 @@ const serverMessage = (autor, message) => { // Funcion del mensaje dinamico que 
             </div>`;
 };
 
+// Manejar el evento 'message' del servidor
 // Escuchar un evento del servidor
 socket.emit("connection", function (mensaje) { // Validar que podemos conectarnos al socket
   console.log("Respuesta del servidor:");
@@ -33,6 +45,8 @@ socket.emit("connection", function (mensaje) { // Validar que podemos conectarno
 
 // Manejar el evento 'respuesta' del servidor
 socket.on("message", function (messages) {
+  console.log("Datos recibidos desde el servidor: https://manejador.azurewebsites.net", messages);
+  
   const userName = localStorage.getItem("username"); // Validar si loe mensajes son del usario o de otro usuario
   const messageList = document.getElementById("message-list"); // Recuperamos el id del chat para insertar los mensajes
 
@@ -52,6 +66,7 @@ document.getElementById("send-message").addEventListener("click", function () { 
   const message = input.value; // Recuperamos el mensaje que es el valor del input
   if (!message) { // Si el mensaje esta vacio que le mande una lerta que no tiene nada
     alert("Por favor, escribe un mensaje");
+    return;
   }
   const userName = localStorage.getItem("username"); // Recuperamos el usario de local storache
   const payload = { // Hace el payload que se le envia al backend y tiene 2 propiedades de autor y texto
