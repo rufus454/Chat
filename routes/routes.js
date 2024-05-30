@@ -71,9 +71,20 @@ app.post('/api/token', (req, res) => {
 
     // Agregar un nuevo usuario Token
     app.post('/api/users', (request, response) => {
-        const userData = request.body;
+         const userData = request.body;
         const plaintextPassword = userData.contrasea; // Obtén la contraseña sin hashear desde la solicitud
+        const userExists = pool.query('SELECT * FROM users WHERE nombre = ?', userData.nombre, (error, results) => {
+            if (error) {
+                console.error('Error al buscar usuario en la base de datos:', error);
+                return response.status(500).json({ error: 'Error interno del servidor' });
+            }
+            return results.length > 0;
+        }
+        );
 
+        if (userExists)
+            return response.status(409).json({ error: 'El usuario ya existe' });
+        
         // Hashea la contraseña antes de almacenarla en la base de datos
         bcrypt.hash(plaintextPassword, 10, (err, hash) => {
             if (err) {

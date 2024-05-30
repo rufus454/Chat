@@ -147,7 +147,11 @@
           if (response.status === 201) {
             alert('Usuario creado exitosamente, por favor inicia sesión');
             location.reload();
-          } else {
+          }
+          else if (response.status == 409) {
+            alert('Este usuario ya existe');
+          }
+          else {
             alert('Error al crear usuario');
           }
         })

@@ -1,23 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html> <!-- Declara el tipo de documento y la versión HTML. -->
+<html lang="en"> <!-- El elemento raíz del documento HTML, con el idioma establecido en inglés. -->
 
-<head>
-    <meta charset="UTF-8">
-    <title>Conversa con tus amigos</title>
+<head> <!-- Contiene metadatos y enlaces a recursos externos. -->
+    <meta charset="UTF-8"> <!-- Especifica la codificación de caracteres del documento. -->
+    <title>Conversa con tus amigos</title> <!-- : Título del documento que aparece en la pestaña del navegador. -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Este parte de codigo nos dice que vamos a usar tailwinds como una liberia de css para los estilos. -->
 </head>
 
 <body class="flex flex-col items-center justify-center w-screen min-h-screen bg-gray-100 text-gray-800 p-10">
+    <!-- La etiqueta body estamos usando para darle un estilo a la pantalla y da a un asierto espaciado.  -->
+    <!--  -->
     <h1 class="mb-3 font-bold text-xl" id="title"></h1>
+    <!-- Etiqueta para darle bienvenida al usuario, El mensaje se inserte por javascript al recuperar el usuario -->
     <!-- Component Start -->
     <div class="flex flex-col flex-grow w-full max-w-xl bg-white shadow-xl rounded-lg overflow-hidden">
+        <!-- Este es el contenedor para el chat y el input que manda los mensajes -->
         <div class="flex flex-col flex-grow h-0 p-4 overflow-auto" id="message-list">
+            <!-- Contenedor para los mensajes que lo insertan por el javascriplt-->
         </div>
 
         <div class="bg-gray-300 p-4 flex items-center justify-between border-t border-gray-200">
+            <!-- Contenedor para el input y para el botton -->
             <input id="message-input" class="flex items-center h-10 w-full rounded px-3 text-sm" type="text"
-                placeholder="Envía tu mensaje" />
+                placeholder="Envía tu mensaje" /> <!-- El contenedor par enviar el mensaje -->
             <button id="send-message" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <!-- Button para dispara el envio del mensaje -->
                 Enviar
             </button>
         </div>
@@ -25,32 +33,35 @@
     </div>
 
     <button type="button" class="absolute top-3 right-3 bg-red-300 rounded-full w-32" onclick="logout()">
+        <!-- Botton que tiene una clase absoluta que esta pegado en la derecha para cerrar seccion -->
         Cerrar<br>Sesión
     </button>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
-    <script src="socket.js"></script>
+    <!-- Esto es para usar todos los scripts de sockets.io para todo el proyecto -->
+    <script src="socket.js"></script> <!-- Es que esta ecuhando los eventos del servidor -->
 
+    <!-- Este escript son lo que tiene todo la logica  -->
     <script type="text/javascript">
         window.addEventListener('DOMContentLoaded', function () {
             init();
-        });
+        }); //Este es cuando se moonte la vista cargue evento init 
 
-        const init = () => {
-            const token = localStorage.getItem('token');
-            if (!token) {
+        const init = () => { // 
+            const token = localStorage.getItem('token'); // Recuperamos el token para validar que el usario este en seccion activa
+            if (!token) {  // si no existe el token lo renueve y lanza una lerta 
                 localStorage.removeItem('token');
-                alert('No tienes permiso para estar aquí');
-                window.location.href = 'index.html';
+                alert('No tienes permiso para estar aquí'); // alerta para no tener el token
+                window.location.href = 'index.html'; // De devuelve al inicio de seccion
                 return;
             }
-            const username = localStorage.getItem('username');
-            document.getElementById('title').innerText = `Bienvenido ${username}`;
+            const username = localStorage.getItem('username'); // Este reculpera el username
+            document.getElementById('title').innerText = `Bienvenido ${username}`; // Estams buscando el elmento de id y agregamos el texto de Bienvenido 
         }
 
-        const logout = () => {
-            localStorage.removeItem('token');
-            window.location.href = 'index.html';
+        const logout = () => {  // Metodo para cerrar seccion
+            localStorage.removeItem('token'); // Elimina el token
+            window.location.href = 'index.html'; // Redirecciona al index.html
         }
     </script>
 
